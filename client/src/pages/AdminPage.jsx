@@ -16,7 +16,7 @@ export default function Dashboard() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:3000/api/overview', {
+                const response = await fetch('https://ilead-app-production.up.railway.app/api/overview', {
                     headers: {
                         token: localStorage.getItem('token'),
                     },
@@ -76,7 +76,7 @@ export default function Dashboard() {
         if (data.length <= 0) return
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:3000/api/toggleAttendance', {
+                const response = await fetch('https://ilead-app-production.up.railway.app/api/toggleAttendance', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -100,7 +100,7 @@ export default function Dashboard() {
 
     const toggleAttendanceForRoundTable = async (roundTable) => {
         try {
-            const response = await fetch('http://localhost:3000/api/toggleAttendanceForRoundTable', {
+            const response = await fetch('https://ilead-app-production.up.railway.app/api/toggleAttendanceForRoundTable', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(roundTable),

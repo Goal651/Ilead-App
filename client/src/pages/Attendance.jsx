@@ -23,7 +23,7 @@ export default function Attendance() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`http://localhost:3000/api/membersAndAttendance/${roundTableName}/${className}`);
+                const response = await fetch(`https://ilead-app-production.up.railway.app/api/membersAndAttendance/${roundTableName}/${className}`);
                 const data = await response.json();
                 if (response.ok) {
                     setLoading(false);
@@ -44,7 +44,7 @@ export default function Attendance() {
 
     // Set up SSE
     useEffect(() => {
-        const eventSource = new EventSource('http://localhost:3000/events');
+        const eventSource = new EventSource('https://ilead-app-production.up.railway.app/events');
         let isMounted = true;
 
         eventSource.onmessage = (event) => {
@@ -93,7 +93,7 @@ export default function Attendance() {
         }));
 
         try {
-            const response = await fetch('http://localhost:3000/api/handle-attendance', {
+            const response = await fetch('https://ilead-app-production.up.railway.app/api/handle-attendance', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

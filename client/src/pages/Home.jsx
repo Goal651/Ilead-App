@@ -22,7 +22,7 @@ export default function Home() {
         localStorage.setItem('className', class_name);
 
         try {
-            const result = await fetch(`http://localhost:3000/api/checkRoundTable/${newRoundTableName}/${class_name}`);
+            const result = await fetch(`https://ilead-app-production.up.railway.app/api/checkRoundTable/${newRoundTableName}/${class_name}`);
             const data = await result.json();
             if (result.ok) {
                 // Successful check

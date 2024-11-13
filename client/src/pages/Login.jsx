@@ -16,7 +16,7 @@ export default function Login() {
                 loginData.password = password;
             }
 
-            const response = await fetch('http://localhost:3000/api/login', {
+            const response = await fetch('https://ilead-app-production.up.railway.app/api/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

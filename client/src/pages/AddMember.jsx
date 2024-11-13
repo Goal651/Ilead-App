@@ -14,7 +14,7 @@ export default function AddMember() {
     useEffect(() => {
         const fetchMembers = async () => {
             try {
-                const response = await fetch(`http://localhost:3000/api/members/${roundTableName}`, {
+                const response = await fetch(`https://ilead-app-production.up.railway.app/api/members/${roundTableName}`, {
                     headers: { token: localStorage.getItem('token') },
                     method: 'GET'
                 });
@@ -59,7 +59,7 @@ export default function AddMember() {
         }
 
         try {
-            const response = await fetch('http://localhost:3000/api/addMembers', {
+            const response = await fetch('https://ilead-app-production.up.railway.app/api/addMembers', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
