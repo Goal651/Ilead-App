@@ -1,0 +1,79 @@
+* {
+  font-size: 14px;
+}
+
+body {
+  background-color: white;
+}
+
+input {
+  outline: blue;
+  background-color: transparent;
+  display: block;
+}
+
+input:focus {
+  outline: blue;
+  border: 0;
+}
+
+label {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.navigation {
+  background-color: rgb(8, 8, 8);
+  color: rgb(204, 201, 201);
+  font-weight: 500;
+}
+
+.navigation img {
+  width: 5rem;
+}
+
+.navigation div {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.navigation h3 {
+  font-size: 1rem;
+}
+
+.gradient {
+  background: linear-gradient(to right, black, blue, white)
+}
+
+.form {
+  height: auto;
+  translate: 25%15%;
+}
+
+.profile {
+  width: fit-content;
+
+}
+
+.edit {
+  position: absolute;
+  display: none;
+  top: 7.5rem;
+  left: 13rem;
+  z-index: 1;
+
+}
+
+.profile:hover .edit {
+  display: block;
+}
+
+.profile:hover .pro-img {
+  transition: opacity, 0.5s;
+  opacity: 0.7;
+}
+
+.Content {
+  display: block;
+}

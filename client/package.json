@@ -1,0 +1,46 @@
+{
+  "name": "chat-app",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@emoji-mart/data": "^1.2.1",
+    "@emoji-mart/react": "^1.1.1",
+    "@headlessui/react": "^2.1.2",
+    "axios": "^1.7.2",
+    "cropperjs": "^1.6.2",
+    "crypto-js": "^4.2.0",
+    "dotenv": "^16.4.5",
+    "emoji-mart": "^5.6.0",
+    "js-cookie": "^3.0.5",
+    "lodash": "^4.17.21",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-responsive": "^10.0.0",
+    "react-router-dom": "^6.23.1",
+    "react-spinners": "^0.14.1",
+    "react-webcam": "^7.2.0",
+    "simple-peer": "^9.11.1",
+    "socket.io-client": "^4.7.5"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22",
+    "@vitejs/plugin-react-swc": "^3.5.0",
+    "autoprefixer": "^10.4.19",
+    "daisyui": "^4.12.10",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.34.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.6",
+    "postcss": "^8.4.39",
+    "tailwindcss": "^3.4.4",
+    "vite": "^5.2.0"
+  }
+}
