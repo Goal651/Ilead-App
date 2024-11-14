@@ -50,11 +50,11 @@ const addMembers = async (req, res) => {
 };
 
 const getMembers = async (req, res) => {
-    const { roundTableName } = req.params;
+    const { roundTableName,className } = req.params;
     let allowedToEdit = false;
-    if (req.userRole == 'facilitator') allowedToEdit = true
     try {
-        const roundTable = await RoundTable3.findOne(
+        const roundTableClass = getRoundTableClass(className);
+        const roundTable = await roundTableClass.findOne(
             { name: { $regex: `^${roundTableName}$`, $options: 'i' } }
         );
         if (!roundTable) return res.status(404).json({ message: 404 });
