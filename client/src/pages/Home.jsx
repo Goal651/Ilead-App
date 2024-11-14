@@ -11,7 +11,6 @@ export default function Home() {
     const handleSubmission = async (e) => {
         e.preventDefault();
         const { roundtable, facilitator, className } = e.target;
-        console.log(facilitator)
         const facilitatorName = facilitator ? facilitator.value : '';
         const newRoundTableName = roundtable.value;
         const class_name = className.value;
@@ -25,14 +24,14 @@ export default function Home() {
             const result = await fetch(`https://ilead-app-production.up.railway.app/api/checkRoundTable/${newRoundTableName}/${class_name}`);
             const data = await result.json();
             if (result.ok) {
-                // Successful check
+                localStorage.setItem('roundtable', data.message.name);
                 setRoundTableName(data.message.name);
                 localStorage.setItem('new', 'false');
+                navigate('/attendance');
                 navigate('/attendance');
             } else if (result.status == 404) {
                 setErrorMessage('RoundTable not found. Please try again.');
             } else {
-                // Round table not found
                 localStorage.setItem('new', 'true');
                 navigate('/addMembers');
             }
