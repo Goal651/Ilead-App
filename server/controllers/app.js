@@ -69,7 +69,10 @@ const getMembersAndAttendance = async (req, res) => {
     const { roundTableName, className } = req.params;
     try {
         const roundTableClass = getRoundTableClass(className);
-        const roundTable = await roundTableClass.findOne({ name: roundTableName }, { collation: { locale: 'en', strength: 2 } });
+        const roundTable = await roundTableClass.findOne(
+            { name: roundTableName },
+            { collation: { locale: 'en', strength: 2 } }
+        );
         if (!roundTable) return res.status(404).json({ message: 'Round Table not found' });
         const membersWithAttendance = roundTable.members
         res.status(200).json({ members: membersWithAttendance, allowedToEdit: roundTable.allowedToEdit, roundTableName, className });
@@ -81,13 +84,14 @@ const getMembersAndAttendance = async (req, res) => {
 
 const handleAttendance = async (req, res) => {
     const { roundTableName, attendanceData, className } = req.body;
+    console.log(req.body)
     try {
         const roundTableClass = getRoundTableClass(className);
         const roundTable = await roundTableClass.findOne(
             { name: roundTableName },
             { collation: { locale: 'en', strength: 2 } }
         );
-        if (!roundTable) return res.status(404).json({ message: 404 })
+        if (!roundTable) return res.status(404).json({ message: 'Round Table not found' })
         attendanceData.forEach(({ memberId, date, status, reason }) => {
             const member = roundTable.members.id(memberId);
             if (member) {
