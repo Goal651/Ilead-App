@@ -55,8 +55,7 @@ const getMembers = async (req, res) => {
     if (req.userRole == 'facilitator') allowedToEdit = true
     try {
         const roundTable = await RoundTable3.findOne(
-            { name: roundTableName },
-            { collation: { locale: 'en', strength: 2 } }
+            { name: { $regex: `^${roundTableName}$`, $options: 'i' } }
         );
         if (!roundTable) return res.status(404).json({ message: 404 });
         const members = roundTable.members
@@ -164,8 +163,7 @@ const checkRoundTable = async (req, res) => {
         if (!roundTableName || !className) return res.sendStatus(400)
         const roundTableClass = getRoundTableClass(className);
         const result = await roundTableClass.findOne(
-            { name: roundTableName },
-            { collation: { locale: 'en', strength: 2 } }
+            { name: { $regex: `^${roundTableName}$`, $options: 'i' } }
         )
         if (!result) return res.status(404).json({ message: 'Round Table not found' })
         res.status(200).json({ message: result })
