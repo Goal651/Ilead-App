@@ -54,7 +54,10 @@ const getMembers = async (req, res) => {
     let allowedToEdit = false;
     if (req.userRole == 'facilitator') allowedToEdit = true
     try {
-        const roundTable = await RoundTable3.findOne({ name: roundTableName });
+        const roundTable = await RoundTable3.findOne(
+            { name: roundTableName },
+            { collation: { locale: 'en', strength: 2 } }
+        );
         if (!roundTable) return res.status(404).json({ message: 404 });
         const members = roundTable.members
         res.status(200).json({ members, allowedToEdit });
@@ -164,7 +167,7 @@ const checkRoundTable = async (req, res) => {
             { name: roundTableName },
             { collation: { locale: 'en', strength: 2 } }
         )
-        if (!result) return res.sendStatus(404)
+        if (!result) return res.status(404).json({ message: 'Round Table not found' })
         res.status(200).json({ message: result })
     } catch (error) {
         res.status(500).json({ message: 'Internal server error' });
