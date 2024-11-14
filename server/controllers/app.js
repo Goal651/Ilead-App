@@ -28,6 +28,23 @@ const handleEvents = (req, res) => {
     });
 };
 
+const registerRoundTable = async (req, res) => {
+    try {
+        const { roundtable, facilitator, className } = req.body;
+        if (!roundtable || !facilitator || !className) return res.status(400).json({ message: 'Missing required fields' })
+        const roundTableClass = getRoundTableClass(className);
+        const roundTable = new roundTableClass({
+            name: roundtable,
+            facilitator
+        });
+        await roundTable.save();
+        res.status(200).json({ roundTableName: roundTable.name, className });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
 
 const addMembers = async (req, res) => {
     const { members, roundTableName, facilitator } = req.body;
@@ -50,7 +67,7 @@ const addMembers = async (req, res) => {
 };
 
 const getMembers = async (req, res) => {
-    const { roundTableName,className } = req.params;
+    const { roundTableName, className } = req.params;
     let allowedToEdit = false;
     try {
         const roundTableClass = getRoundTableClass(className);
@@ -237,4 +254,5 @@ module.exports = {
     toggleAttendance,
     toggleAttendanceForRoundTable,
     handleEvents,
+    registerRoundTable
 };

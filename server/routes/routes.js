@@ -15,11 +15,13 @@ router.post('/api/login', controller.Login)
 router.post('/api/changeAdminPassword', controller.changeAdminPassword)
 router.post('/api/toggleAttendance', controller.toggleAttendance)
 router.post('/api/toggleAttendanceForRoundTable', controller.toggleAttendanceForRoundTable)
+router.post('/api/registerRoundTable', controller.registerRoundTable)
 router.post('/api/checkUser',
     (req, res) => {
         res.status(200).json({ message: 'User exists' })
     }
 )
+
 router.get('*', (req, res) => res.sendStatus(404))
 
 

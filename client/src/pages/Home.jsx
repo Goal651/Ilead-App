@@ -5,9 +5,7 @@ export default function Home() {
     const navigate = useNavigate();
     const [roundTableName, setRoundTableName] = useState(localStorage.getItem('roundtable') || '');
     const [errorMessage, setErrorMessage] = useState('');
-    const newRoundTable = localStorage.getItem('new') === 'true'; // Ensure it's treated as a boolean
 
-    // Handle the submission of the round table name and facilitator
     const handleSubmission = async (e) => {
         e.preventDefault();
         const { roundtable, className } = e.target;
@@ -83,24 +81,6 @@ export default function Home() {
                                     placeholder="RoundTable Name"
                                     required
                                 />
-                                {newRoundTable && (
-                                    <>
-                                        <label
-                                            htmlFor="facilitator"
-                                            className="block text-sm font-medium text-gray-700 mt-4"
-                                        >
-                                            Enter Full Names (facilitator)
-                                        </label>
-                                        <input
-                                            type="text"
-                                            name="facilitator"
-                                            id="facilitator"
-                                            className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                                            placeholder="John Doe"
-                                            required
-                                        />
-                                    </>
-                                )}
                                 <label
                                     htmlFor="className"
                                     className="block text-sm font-medium text-gray-700 mt-4"

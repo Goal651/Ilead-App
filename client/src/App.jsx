@@ -8,6 +8,7 @@ import Dashboard from './pages/AdminPage';
 import Login from './pages/Login';
 import HomePage from './pages/DashBoard';
 import NotFound from './pages/NotFound';
+import RegisterRoundTable from './pages/RegisterRoundTable';
 
 export default function App() {
   return (
@@ -22,7 +23,7 @@ export default function App() {
             <Route path='/' element={<HomePage />} />
             <Route path='/addMembers' element={<AddMember />} />
             <Route path='/enter-roundtable' element={<Home />} />
-            <Route path='/register-roundTable' element={<Home />} />
+            <Route path='/register-roundTable' element={<RegisterRoundTable/>} />
             <Route path='/attendance' element={<Attendance />} />
             <Route path='/admin' element={<Login />} />
             <Route path='/SudoSu' element={<Dashboard />} />
