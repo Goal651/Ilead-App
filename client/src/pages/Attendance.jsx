@@ -201,7 +201,9 @@ export default function Attendance() {
                             className='mt-4 p-2 text-red-700 bg-red-100 border border-red-400 rounded'
                         >
                             <div>No members present</div>
-                            <button onClick={() => navigate('/add-member')}>Add members</button>
+                            <button
+                            className='btn btn-info text-white' 
+                            onClick={() => navigate('/addMembers')}>Add members</button>
 
                         </div>
                     )}
