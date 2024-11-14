@@ -196,7 +196,7 @@ export default function Attendance() {
                         </div>
                     )}
 
-                    {users.length < 0 && (
+                    {users.length <= 0 && (
                         <div
                             className='mt-4 p-2 text-red-700 bg-red-100 border border-red-400 rounded'
                         >
