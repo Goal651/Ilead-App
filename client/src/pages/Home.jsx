@@ -10,13 +10,11 @@ export default function Home() {
     // Handle the submission of the round table name and facilitator
     const handleSubmission = async (e) => {
         e.preventDefault();
-        const { roundtable, facilitator, className } = e.target;
-        const facilitatorName = facilitator ? facilitator.value : '';
+        const { roundtable, className } = e.target;
         const newRoundTableName = roundtable.value;
         const class_name = className.value;
 
         // Store values in localStorage
-        localStorage.setItem('facilitator', facilitatorName);
         localStorage.setItem('roundtable', newRoundTableName);
         localStorage.setItem('className', class_name);
 
@@ -25,8 +23,8 @@ export default function Home() {
             const data = await result.json();
             if (result.ok) {
                 localStorage.setItem('roundtable', data.message.name);
-                setRoundTableName(data.message.name);
                 localStorage.setItem('new', 'false');
+                setRoundTableName(data.message.name);
                 navigate('/attendance');
                 navigate('/attendance');
             } else if (result.status == 404) {
