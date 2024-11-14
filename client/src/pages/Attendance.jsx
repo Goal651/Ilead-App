@@ -29,7 +29,6 @@ export default function Attendance() {
                     setLoading(false);
                     if (data.message === 404) navigate('/attendance');
                     setUsers(data.members || []);
-                    if (!data.members || data.members.length === 0) navigate('/addMembers');
                     setAllowedToEdit(data.allowedToEdit || false);
                 } else {
                     navigate('/');
@@ -50,8 +49,8 @@ export default function Attendance() {
         eventSource.onmessage = (event) => {
             if (isMounted) {
                 const data = JSON.parse(event.data);
-                if(data.forAll)return setAllowedToEdit(data.message)
-                if(data.roundTableName===roundTableName)return setAllowedToEdit(data.message)
+                if (data.forAll) return setAllowedToEdit(data.message)
+                if (data.roundTableName === roundTableName) return setAllowedToEdit(data.message)
 
             }
         };
@@ -128,70 +127,82 @@ export default function Attendance() {
                     >
                         Back to home
                     </button>
+                    {users && (
 
-                    <form onSubmit={handleSubmitAttendance}>
-                        <table className="table w-full bg-white rounded-lg shadow-md">
-                            <thead>
-                                <tr className="bg-gray-200 text-gray-700">
-                                    <th className="py-2 px-4 border-b text-left">Member Names</th>
-                                    <th className="py-2 px-4 border-b">Present</th>
-                                    <th className="py-2 px-4 border-b">Reason</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {users.length > 0 ? (
-                                    users.map((user) => (
-                                        <tr key={user._id} className="hover:bg-gray-100">
-                                            <td className="py-2 px-4 border-b">{user.name}</td>
-                                            <td className="py-2 px-4 border-b">
-                                                <input
-                                                    type="checkbox"
-                                                    className="checkbox"
-                                                    checked={
-                                                        allowedToEdit
-                                                            ? selectedMembers.includes(user._id)
-                                                            : user.attendance?.length > 0 && user.attendance[user.attendance.length - 1].status
-                                                    }
-                                                    onChange={() => handleCheckboxChange(user._id)}
-                                                    disabled={!allowedToEdit}
-                                                />
-                                            </td>
-                                            <td className="py-2 px-4 border-b">
-                                                {allowedToEdit ? (
-                                                    <input
-                                                        type="text"
-                                                        placeholder="Reason for absence"
-                                                        className="input w-full border-none focus:outline-none"
-                                                        onChange={handleChange}
-                                                        value={reason[user._id] || ''}
-                                                        name={user._id}
-                                                        disabled={selectedMembers.includes(user._id)}
-                                                    />
-                                                ) : (
-                                                    user.attendance?.length > 0 ? user.attendance[user.attendance.length - 1].reason : ''
-                                                )}
-                                            </td>
-                                        </tr>
-                                    ))
-                                ) : (
-                                    <tr>
-                                        <td colSpan="3" className="py-2 px-4 text-center">No users found</td>
+                        <form onSubmit={handleSubmitAttendance}>
+                            <table className="table w-full bg-white rounded-lg shadow-md">
+                                <thead>
+                                    <tr className="bg-gray-200 text-gray-700">
+                                        <th className="py-2 px-4 border-b text-left">Member Names</th>
+                                        <th className="py-2 px-4 border-b">Present</th>
+                                        <th className="py-2 px-4 border-b">Reason</th>
                                     </tr>
-                                )}
-                            </tbody>
-                        </table>
-                        <button
-                            type="submit"
-                            className={`mt-4 w-full text-white px-4 py-2 rounded ${allowedToEdit ? 'bg-green-500 hover:bg-green-600' : 'bg-slate-300 cursor-not-allowed'}`}
-                            disabled={!allowedToEdit}
-                        >
-                            Submit Attendance
-                        </button>
-                    </form>
+                                </thead>
+                                <tbody>
+                                    {users.length > 0 ? (
+                                        users.map((user) => (
+                                            <tr key={user._id} className="hover:bg-gray-100">
+                                                <td className="py-2 px-4 border-b">{user.name}</td>
+                                                <td className="py-2 px-4 border-b">
+                                                    <input
+                                                        type="checkbox"
+                                                        className="checkbox"
+                                                        checked={
+                                                            allowedToEdit
+                                                                ? selectedMembers.includes(user._id)
+                                                                : user.attendance?.length > 0 && user.attendance[user.attendance.length - 1].status
+                                                        }
+                                                        onChange={() => handleCheckboxChange(user._id)}
+                                                        disabled={!allowedToEdit}
+                                                    />
+                                                </td>
+                                                <td className="py-2 px-4 border-b">
+                                                    {allowedToEdit ? (
+                                                        <input
+                                                            type="text"
+                                                            placeholder="Reason for absence"
+                                                            className="input w-full border-none focus:outline-none"
+                                                            onChange={handleChange}
+                                                            value={reason[user._id] || ''}
+                                                            name={user._id}
+                                                            disabled={selectedMembers.includes(user._id)}
+                                                        />
+                                                    ) : (
+                                                        user.attendance?.length > 0 ? user.attendance[user.attendance.length - 1].reason : ''
+                                                    )}
+                                                </td>
+                                            </tr>
+                                        ))
+                                    ) : (
+                                        <tr>
+                                            <td colSpan="3" className="py-2 px-4 text-center">No users found</td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
+                            <button
+                                type="submit"
+                                className={`mt-4 w-full text-white px-4 py-2 rounded ${allowedToEdit ? 'bg-green-500 hover:bg-green-600' : 'bg-slate-300 cursor-not-allowed'}`}
+                                disabled={!allowedToEdit}
+                            >
+                                Submit Attendance
+                            </button>
+                        </form>
 
+                    )}
                     {formSubmitted && (
                         <div className="mt-4 p-2 text-green-700 bg-green-100 border border-green-400 rounded">
                             Attendance updated successfully!
+                        </div>
+                    )}
+
+                    {users.length < 0 && (
+                        <div
+                            className='mt-4 p-2 text-red-700 bg-red-100 border border-red-400 rounded'
+                        >
+                            <div>No members present</div>
+                            <button onClick={() => navigate('/add-member')}>Add members</button>
+
                         </div>
                     )}
                 </div>
