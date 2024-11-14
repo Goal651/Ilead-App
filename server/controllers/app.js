@@ -73,11 +73,9 @@ const getMembersAndAttendance = async (req, res) => {
         const roundTableClass = getRoundTableClass(className);
         const roundTable = await roundTableClass.findOne(
             { name: roundTableName },
-            { collation: { locale: 'en', strength: 2 } }
         );
         if (!roundTable) return res.status(404).json({ message: 'Round Table not found' });
-        const membersWithAttendance = roundTable.members
-        res.status(200).json({ members: membersWithAttendance, allowedToEdit: roundTable.allowedToEdit, roundTableName, className });
+        res.status(200).json({ members: roundTable.members, allowedToEdit: roundTable.allowedToEdit, roundTableName, className });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal server error' });
@@ -91,7 +89,6 @@ const handleAttendance = async (req, res) => {
         const roundTableClass = getRoundTableClass(className);
         const roundTable = await roundTableClass.findOne(
             { name: roundTableName },
-            { collation: { locale: 'en', strength: 2 } }
         );
         if (!roundTable) return res.status(404).json({ message: 'Round Table not found' })
         attendanceData.forEach(({ memberId, date, status, reason }) => {
