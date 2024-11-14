@@ -160,7 +160,10 @@ const checkRoundTable = async (req, res) => {
         const { roundTableName, className } = req.params
         if (!roundTableName || !className) return res.sendStatus(400)
         const roundTableClass = getRoundTableClass(className);
-        const result = await roundTableClass.findOne({ name: roundTableName })
+        const result = await roundTableClass.findOne(
+            { name: roundTableName },
+            { collation: { locale: 'en', strength: 2 } }
+        )
         if (!result) return res.sendStatus(404)
         res.status(200).json({ message: result })
     } catch (error) {
