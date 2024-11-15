@@ -174,7 +174,6 @@ const Login = async (req, res) => {
             roundTableName: facilitator?.roundTable?.name,
             className: facilitator?.roundTableModel
         }
-
         res.status(200).json(response)
     } catch (error) {
         console.error(error)
