@@ -168,7 +168,14 @@ const Login = async (req, res) => {
         const isRealPassword = await bcrypt.compare(password, passwordToBeUsed)
         if (!isRealPassword) return res.status(400).json({ message: 'Invalid password' })
         const token = jwt.sign({ id: facilitator?._id || admin?._id }, process.env.JWT_SECRET, { expiresIn: '1d' })
-        res.status(200).json({ token, message: 'Login successful', role: admin ? 'admin' : 'facilitator',facilitator })
+        const response = {
+            token,
+            role: admin ? 'admin' : 'facilitator',
+            roundTableName: facilitator?.roundTable?.name,
+            className: facilitator?.roundTable?.className
+        }
+
+        res.status(200).json(response)
     } catch (error) {
         console.error(error)
         res.status(500).json({ message: 'Internal server error' })

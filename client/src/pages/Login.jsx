@@ -24,8 +24,9 @@ export default function Login() {
             if (response.ok) {
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('role', data.role);
-                if (data.role == "admin") navigate("/SudoSu");
-                else navigate('/');
+                localStorage.setItem('roundtable', data.roundTableName);
+                localStorage.setItem('className', data.className);
+                navigate('/');
             } else if (response.status === 403) {
                 setError(data.message);
             }
