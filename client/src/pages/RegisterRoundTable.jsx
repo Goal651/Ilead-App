@@ -5,6 +5,7 @@ export default function RegisterRoundTable() {
     const [formData, setFormData] = useState({});
     const navigate = useNavigate()
     const [error, setError] = useState('');
+    const token = localStorage.getItem('token')
 
     const handleSubmission = async (e) => {
         e.preventDefault();
@@ -14,6 +15,7 @@ export default function RegisterRoundTable() {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
+                    token
                 },
                 body: JSON.stringify(formData)
             });
@@ -24,8 +26,6 @@ export default function RegisterRoundTable() {
                 localStorage.setItem('new', 'false');
                 navigate('/addMembers');
             } else setError(data.message)
-
-
             navigate('/addMembers');
         } catch (error) {
             console.log(error)

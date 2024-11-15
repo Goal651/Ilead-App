@@ -1,5 +1,5 @@
-import { Suspense } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Suspense} from 'react';
+import {  BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import AddMember from './pages/AddMember';
 import Home from './pages/Home';
@@ -23,11 +23,11 @@ export default function App() {
             <Route path='/' element={<HomePage />} />
             <Route path='/addMembers' element={<AddMember />} />
             <Route path='/enter-roundtable' element={<Home />} />
-            <Route path='/register-roundTable' element={<RegisterRoundTable/>} />
+            <Route path='/register-roundTable' element={<RegisterRoundTable />} />
             <Route path='/attendance' element={<Attendance />} />
-            <Route path='/admin' element={<Login />} />
+            <Route path='/login' element={<Login />} />
             <Route path='/SudoSu' element={<Dashboard />} />
-            <Route path='*' element={<NotFound/>} />
+            <Route path='*' element={<NotFound />} />
           </Routes>
         </Suspense>
       </Router>

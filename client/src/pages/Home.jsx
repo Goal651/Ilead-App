@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
@@ -6,6 +6,10 @@ export default function Home() {
     const [roundTableName, setRoundTableName] = useState(localStorage.getItem('roundtable') || '');
     const [errorMessage, setErrorMessage] = useState('');
 
+    const token = localStorage.getItem('token')
+    useEffect(() => {
+      if (!token) navigate('/login')
+    }, [])
     const handleSubmission = async (e) => {
         e.preventDefault();
         const { roundtable, className } = e.target;
@@ -17,7 +21,12 @@ export default function Home() {
         localStorage.setItem('className', class_name);
 
         try {
-            const result = await fetch(`https://ilead-app-production.up.railway.app/api/checkRoundTable/${newRoundTableName}/${class_name}`);
+            const result = await fetch(`https://ilead-app-production.up.railway.app/api/checkRoundTable/${newRoundTableName}/${class_name}`,{
+                header: {
+                    'token': token
+                },
+                method:'GET'
+            });
             const data = await result.json();
             if (result.ok) {
                 localStorage.setItem('roundtable', data.message.name);

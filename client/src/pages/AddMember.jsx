@@ -7,16 +7,23 @@ export default function AddMember() {
     const [formSubmitted, setFormSubmitted] = useState(false); // State for success message
     const [error, setError] = useState('');
     const roundTableName = localStorage.getItem('roundtable');
-    const className=localStorage.getItem('className');
+    const className = localStorage.getItem('className');
     const facilitator = localStorage.getItem('facilitator');
     const newTable = localStorage.getItem('new');
+    const token = localStorage.getItem('token')
+    useEffect(() => {
+        if (!token) navigate('/login')
+    }, [])
 
     // Fetch existing members when the component mounts
     useEffect(() => {
         const fetchMembers = async () => {
             try {
                 const response = await fetch(`https://ilead-app-production.up.railway.app/api/members/${roundTableName}/${className}`, {
-                    method: 'GET'
+                    method: 'GET',
+                    header: {
+                        'token': token
+                    }
                 });
                 if (response.ok) {
                     const existingMembers = await response.json();
@@ -63,7 +70,7 @@ export default function AddMember() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    token: localStorage.getItem('token')
+                    token
                 },
                 body: JSON.stringify({ members: validMembers, roundTableName, facilitator })
             });

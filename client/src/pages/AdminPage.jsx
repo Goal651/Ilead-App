@@ -1,4 +1,4 @@
-import  { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function Dashboard() {
@@ -12,13 +12,17 @@ export default function Dashboard() {
     const [availableDates, setAvailableDates] = useState([]);
     const [attendingMode, setAttendingMode] = useState(false)
     const navigate = useNavigate();
+    const token = localStorage.getItem('token')
+    useEffect(() => {
+        if (!token) navigate('/login')
+    }, [])
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await fetch('https://ilead-app-production.up.railway.app/api/overview', {
                     headers: {
-                        token: localStorage.getItem('token'),
+                        token
                     },
                     method: 'GET',
                 });
@@ -102,11 +106,15 @@ export default function Dashboard() {
         try {
             const response = await fetch('https://ilead-app-production.up.railway.app/api/toggleAttendanceForRoundTable', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    header: {
+                        'token': token
+                    }
+                },
                 body: JSON.stringify(roundTable),
             });
             const result = await response.json();
-            console.log("this is result:  ", result)
             if (response.ok) {
                 setData((prevData) => (prevData.map((rt) =>
                     rt.name === roundTable.roundTableName ? { ...rt, allowedToEdit: result } : rt

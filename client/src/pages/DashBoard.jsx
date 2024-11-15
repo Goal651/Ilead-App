@@ -1,8 +1,14 @@
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 export default function HomePage() {
     const navigate = useNavigate();
     const roundTableName = localStorage.getItem('roundtable');
+
+    const token = localStorage.getItem('token')
+    useEffect(() => {
+        if (!token) navigate('/login')
+    }, [])
 
     // Handlers for navigation
     const handleRegister = () => {

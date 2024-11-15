@@ -1,5 +1,5 @@
-const { Admin, RoundTable2, RoundTable3, RoundTable1, Attendance } = require('../models/models'); // Adjust the import path accordingly
-const bcrypt = require('bcryptjs')
+const { Admin, RoundTable2, RoundTable3, RoundTable1, Facilitator } = require('../models/models'); // Adjust the import path accordingly
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken')
 const clients = [];
 
@@ -152,7 +152,23 @@ const getOverview = async (req, res) => {
 
 
 const Login = async (req, res) => {
-
+    try {
+        console.log(req.body)
+        const names = req.body.names.toLowerCase().trim() || '';
+        const password = req.body.password || ''
+        if (!names || !password) return res.status(400).json({ message: 'Enter all names and password' })
+        const facilitator = await Facilitator.findOne({ names })
+        const admin = await Admin.findOne({ names })
+        if (!facilitator && !admin) return res.status(404).json({ message: 'Facilitator not found' })
+        const passwordToBeUsed = admin ? admin.password : facilitator.password
+        const isRealPassword = await bcrypt.compare(password, passwordToBeUsed)
+        if (!isRealPassword) return res.status(400).json({ message: 'Invalid password' })
+        const token = jwt.sign({ id: facilitator?._id || admin?._id }, process.env.JWT_SECRET, { expiresIn: '1d' })
+        res.status(200).json({ token, message: 'Login successful', role: admin ? 'admin' : 'facilitator' })
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ message: 'Internal server error' })
+    }
 };
 
 const changeAdminPassword = async (req, res) => {
@@ -240,6 +256,38 @@ const toggleAttendanceForRoundTable = async (req, res) => {
     }
 }
 
+const createFacilitators = async () => {
+    try {
+        const roundTables = [RoundTable1, RoundTable2, RoundTable3];
+
+        const defaultPassword = await bcrypt.hash('1234', 10);
+
+        for (const roundTableModel of roundTables) {
+            const roundTables = await roundTableModel.find();
+
+            for (const table of roundTables) {
+                const { facilitator } = table;
+                const names = facilitator.toLowerCase().trim();
+                const existingFacilitator = await Facilitator.findOne({ names });
+                if (existingFacilitator) {
+                    console.log(`Facilitator with email ${names} already exists.`);
+                    continue;
+                }
+
+                const newFacilitator = new Facilitator({
+                    names,
+                    password: defaultPassword,
+                });
+                await newFacilitator.save();
+                console.log(`Facilitator ${names} created successfully.`);
+            }
+        }
+        console.log('Facilitator creation process completed.');
+    } catch (error) {
+        console.error('Error creating facilitators:', error.message);
+    }
+};
+
 
 module.exports = {
     addMembers,
@@ -254,5 +302,6 @@ module.exports = {
     toggleAttendance,
     toggleAttendanceForRoundTable,
     handleEvents,
-    registerRoundTable
+    registerRoundTable,
+    createFacilitators
 };

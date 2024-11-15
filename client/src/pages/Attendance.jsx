@@ -11,6 +11,11 @@ export default function Attendance() {
     const [allowedToEdit, setAllowedToEdit] = useState(false);
     const [attended, setAttended] = useState(false);
 
+    const token = localStorage.getItem('token')
+    useEffect(() => {
+        if (!token) navigate('/login')
+    }, [])
+
     // Retrieve data from localStorage with fallback
     const roundTableName = localStorage.getItem('roundtable') || '';
     const className = localStorage.getItem('className') || '';
@@ -23,7 +28,12 @@ export default function Attendance() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`https://ilead-app-production.up.railway.app/api/membersAndAttendance/${roundTableName}/${className}`);
+                const response = await fetch(`https://ilead-app-production.up.railway.app/api/membersAndAttendance/${roundTableName}/${className}`,{
+                    header: {
+                        'token': token
+                    },
+                    method:'GET'
+                });
                 const data = await response.json();
                 if (response.ok) {
                     setLoading(false);
@@ -96,6 +106,7 @@ export default function Attendance() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    token
                 },
                 body: JSON.stringify({ roundTableName, attendanceData, className }),
             });
@@ -202,8 +213,8 @@ export default function Attendance() {
                         >
                             <div>No members present</div>
                             <button
-                            className='btn btn-info text-white' 
-                            onClick={() => navigate('/addMembers')}>Add members</button>
+                                className='btn btn-info text-white'
+                                onClick={() => navigate('/addMembers')}>Add members</button>
 
                         </div>
                     )}

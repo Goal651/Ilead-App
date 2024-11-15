@@ -29,10 +29,14 @@ const attendanceSchema = mongoose.Schema({
 })
 
 const adminSchema = new mongoose.Schema({
-    email: { type: String, required: true },
+    names: { type: String, required: true },
     password: { type: String, required: true },
     attendanceMode: { type: Boolean, default: false }
+})
 
+const facilitatorSchema = new mongoose.Schema({
+    names: { type: String, required: true },
+    password: { type: String, required: true },
 })
 
 
@@ -41,6 +45,7 @@ const adminSchema = new mongoose.Schema({
 const RoundTable1 = mongoose.model('y1', roundTableSchema);
 const RoundTable2 = mongoose.model('y2', roundTableSchema);
 const RoundTable3 = mongoose.model('y3', roundTableSchema);
+const Facilitator = mongoose.model('facilitator', facilitatorSchema);
 const Admin = mongoose.model('admin', adminSchema);
 const Attendance = mongoose.model('attendance', attendanceSchema)
-module.exports = { RoundTable1, RoundTable2, RoundTable3, Admin, Attendance };
+module.exports = { RoundTable1, RoundTable2, RoundTable3, Admin, Attendance, Facilitator };
