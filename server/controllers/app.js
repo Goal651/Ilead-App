@@ -156,7 +156,7 @@ const Login = async (req, res) => {
     try {
         const names = req.body.names.toLowerCase().trim() || '';
         const password = req.body.password || ''
-        if (!names || !password) return res.status(400).json({ message: 'Enter all names and password' })
+        if (!names || !password) return res.status(400).json({ message: 'Enter full name and password' })
         const facilitator = await Facilitator
             .findOne({ names })
             .populate('roundTable')
