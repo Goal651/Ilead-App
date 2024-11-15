@@ -172,7 +172,7 @@ const Login = async (req, res) => {
             token,
             role: admin ? 'admin' : 'facilitator',
             roundTableName: facilitator?.roundTable?.name,
-            className: facilitator?.roundTable?.className
+            className: facilitator?.roundTableModel
         }
 
         res.status(200).json(response)
@@ -307,6 +307,7 @@ const createFacilitators = async () => {
                     roundTableModel: collectionName, // Specify the collection
                     names,
                     password: defaultPassword,
+                    className: collectionName
                 });
 
                 await newFacilitator.save();
