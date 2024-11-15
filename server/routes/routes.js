@@ -24,6 +24,7 @@ router.post('/api/checkUser',
         res.status(200).json({ message: 'User exists' })
     }
 )
+router.get('/test/', controller.getFacilitatorWithRoundTable)
 
 router.get('*', (req, res) => res.sendStatus(404))
 

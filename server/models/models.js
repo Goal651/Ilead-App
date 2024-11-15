@@ -33,11 +33,20 @@ const adminSchema = new mongoose.Schema({
     password: { type: String, required: true },
     attendanceMode: { type: Boolean, default: false }
 })
-
 const facilitatorSchema = new mongoose.Schema({
+    roundTable: {
+        type: mongoose.Schema.Types.ObjectId,
+        refPath: 'roundTableModel',  // Dynamic reference field
+        required: true,
+    },
     names: { type: String, required: true },
     password: { type: String, required: true },
-})
+    roundTableModel: {
+        type: String,
+        required: true,
+    }
+});
+
 
 
 
