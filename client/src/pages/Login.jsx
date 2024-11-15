@@ -23,6 +23,7 @@ export default function Login() {
             const data = await response.json();
             if (response.ok) {
                 localStorage.setItem('token', data.token);
+                localStorage.setItem('role', data.role);
                 if (data.role == "admin") navigate("/SudoSu");
                 else navigate('/');
             } else if (response.status === 403) {
