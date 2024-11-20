@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Bar } from 'react-chartjs-2';
 import 'chart.js/auto';
+import { RingLoader } from 'react-spinners'
 
 export default function Dashboard() {
     const [data, setData] = useState([]);
@@ -16,6 +17,7 @@ export default function Dashboard() {
     const [attendingMode, setAttendingMode] = useState(false);
     const [activeTab, setActiveTab] = useState('graph');
     const [loadingRoundTables, setLoadingRoundTables] = useState(true)
+    const [changingAttendingMode, setChangingAttendingMode] = useState(false)
 
     const navigate = useNavigate();
     const summaryModalRef = useRef(null);
@@ -117,8 +119,9 @@ export default function Dashboard() {
     }
 
     const toggleAttendance = async () => {
-        const dataToSend ={attendanceMode: !attendingMode}
+        setChangingAttendingMode(true)
         try {
+            const dataToSend = { attendanceMode: !attendingMode }
             const response = await fetch('https://ilead-app-production.up.railway.app/api/toggleAttendance', {
                 method: 'POST',
                 body: JSON.stringify(dataToSend),
@@ -131,9 +134,11 @@ export default function Dashboard() {
                 setError('')
                 togglingAttendance()
                 setAttendingMode(!attendingMode)
+                setChangingAttendingMode(false)
             } else setError(data.message)
         } catch (error) {
             setError(error)
+            setChangingAttendingMode(false)
         }
     }
 
