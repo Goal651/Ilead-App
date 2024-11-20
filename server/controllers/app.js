@@ -1,7 +1,8 @@
 const { Admin, RoundTable2, RoundTable3, RoundTable1, Facilitator } = require('../models/models');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const { type } = require('os');
 const clients = [];
 
 const getRoundTableClass = (className) => {
@@ -228,8 +229,8 @@ const findRoundTable = async (req, res) => {
 const toggleAttendance = async (req, res) => {
     try {
         const { attendanceMode } = req.body
-        if (!req.body) return res.status(400).json({ message: 'Bad request' + attendanceMode })
-        // Fetch all roundtables from Y1, Y2, and Y3
+        console.log(typeof attendanceMode)
+        if (!req.body) return res.status(400).json({ message: 'Bad request' })
         await Admin.updateMany({}, { attendanceMode: attendanceMode });
         const [y1RoundTables, y2RoundTables, y3RoundTables] = await Promise.all([
             RoundTable1.find(),
