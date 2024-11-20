@@ -230,7 +230,7 @@ const toggleAttendance = async (req, res) => {
         const { attendanceMode } = req.body
         if (!req.body) return res.status(400).json({ message: 'Bad request' + attendanceMode })
         // Fetch all roundtables from Y1, Y2, and Y3
-        await Admin.updateOne({ names: 'irasubiza saly nelson' }, { attendanceMode: attendanceMode });
+        await Admin.updateMany({}, { attendanceMode: attendanceMode });
         const [y1RoundTables, y2RoundTables, y3RoundTables] = await Promise.all([
             RoundTable1.find(),
             RoundTable2.find(),
