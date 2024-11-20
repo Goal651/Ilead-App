@@ -228,7 +228,7 @@ const findRoundTable = async (req, res) => {
 const toggleAttendance = async (req, res) => {
     try {
         const { attendanceMode } = req.body
-        if(!attendanceMode) return res.status(400).json({message:'Bad request'})
+        if(!attendanceMode) return res.status(400).json({message:'Bad request'+req.body})
         // Fetch all roundtables from Y1, Y2, and Y3
         await Admin.updateOne({ names: 'irasubiza saly nelson' }, { attendanceMode: data })
         const [y1RoundTables, y2RoundTables, y3RoundTables] = await Promise.all([
