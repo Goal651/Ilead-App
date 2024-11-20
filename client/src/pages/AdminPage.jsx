@@ -99,10 +99,12 @@ export default function Dashboard() {
                 } else {
                     const errorMsg = await response.json();
                     setError(errorMsg.message || 'Failed to fetch data');
+                    setLoadingRoundTables(false)
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);
                 setError('An error occurred while fetching data');
+                setLoadingRoundTables(false)
             }
         };
         fetchData();
@@ -242,7 +244,7 @@ export default function Dashboard() {
                         <tbody>
                             {loadingRoundTables ? (
                                 <span className="flex items-center justify-center">
-                                    <span className="animate-spin rounded-full border-4 border-t-transparent border-blue-500 w-8 h-8"></span>
+                                    <span className="loading loading-spinner w-8 h-8"></span>
                                 </span>
                             ) : (data.map((roundTable) => (
                                 <tr
