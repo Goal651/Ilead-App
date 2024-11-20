@@ -110,6 +110,12 @@ export default function Dashboard() {
         fetchData();
     }, []);
 
+    const togglingAttendance = () => {
+        data.forEach(element => {
+            element.allowedToEdit = !element.allowedToEdit
+        });
+    }
+
     const toggleAttendance = async () => {
         const attendanceMode = !attendingMode
         try {
@@ -120,6 +126,7 @@ export default function Dashboard() {
             const data = await response.json()
             if (response.ok) {
                 setError('')
+                togglingAttendance()
                 setAttendingMode(!attendingMode)
             } else setError(data.message)
         } catch (error) {
