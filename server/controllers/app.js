@@ -227,7 +227,7 @@ const findRoundTable = async (req, res) => {
 
 const toggleAttendance = async (req, res) => {
     try {
-        const { data } = req.body
+        const { attendanceMode } = req.body
         // Fetch all roundtables from Y1, Y2, and Y3
         await Admin.updateOne({ names: 'irasubiza saly nelson' }, { attendanceMode: data })
         const [y1RoundTables, y2RoundTables, y3RoundTables] = await Promise.all([
@@ -239,7 +239,7 @@ const toggleAttendance = async (req, res) => {
         const allRoundTables = [...y1RoundTables, ...y2RoundTables, ...y3RoundTables];
 
         for (const roundTable of allRoundTables) {
-            if (data) roundTable.allowedToEdit = true;
+            if (attendanceMode) roundTable.allowedToEdit = true;
             else roundTable.allowedToEdit = false
             await roundTable.save();
         }

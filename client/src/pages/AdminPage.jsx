@@ -111,7 +111,8 @@ export default function Dashboard() {
     const toggleAttendance = async () => {
         try {
             const response = await fetch('https://ilead-app-production.up.railway.app/api/toggleAttendance', {
-                method: 'POST'
+                method: 'POST',
+                body: JSON.stringify({ attendanceMode: !attendingMode }),
             });
             const data = await response.json()
             if (response.ok) {
