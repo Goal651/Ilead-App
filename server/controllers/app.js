@@ -228,9 +228,9 @@ const findRoundTable = async (req, res) => {
 const toggleAttendance = async (req, res) => {
     try {
         const { attendanceMode } = req.body
-        if(!attendanceMode) return res.status(400).json({message:'Bad request'+req.body})
+        if (!attendanceMode) return res.status(400).json({ message: 'Bad request' + attendanceMode })
         // Fetch all roundtables from Y1, Y2, and Y3
-        await Admin.updateOne({ names: 'irasubiza saly nelson' }, { attendanceMode: data })
+        await Admin.updateOne({ names: 'irasubiza saly nelson' }, { attendanceMode })
         const [y1RoundTables, y2RoundTables, y3RoundTables] = await Promise.all([
             RoundTable1.find(),
             RoundTable2.find(),
@@ -244,10 +244,11 @@ const toggleAttendance = async (req, res) => {
             else roundTable.allowedToEdit = false
             await roundTable.save();
         }
-        broadcast({ message: data, forAll: true });
+        broadcast({ message: attendanceMode, forAll: true });
         res.status(200).json({ message: 'allowedToEdit set to true for all roundtables' });
     } catch (error) {
-        res.status(500).json({ message: 'Internal server error'+error });
+        console.error(error)
+        res.status(500).json({ message: 'Internal server error' + error });
     }
 }
 
