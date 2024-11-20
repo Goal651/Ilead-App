@@ -229,7 +229,7 @@ const toggleAttendance = async (req, res) => {
     try {
         const { data } = req.body
         // Fetch all roundtables from Y1, Y2, and Y3
-        await Admin.updateOne({ email: 'test1@gmail.com' }, { attendanceMode: data })
+        await Admin.updateOne({ names: 'irasubiza saly nelson' }, { attendanceMode: data })
         const [y1RoundTables, y2RoundTables, y3RoundTables] = await Promise.all([
             RoundTable1.find(),
             RoundTable2.find(),

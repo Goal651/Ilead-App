@@ -15,6 +15,7 @@ export default function Dashboard() {
     const [availableDates, setAvailableDates] = useState([]);
     const [attendingMode, setAttendingMode] = useState(false);
     const [activeTab, setActiveTab] = useState('graph');
+    const [loadingRoundTables, setLoadingRoundTables] = useState(true)
 
     const navigate = useNavigate();
     const summaryModalRef = useRef(null);
@@ -60,6 +61,7 @@ export default function Dashboard() {
                     method: 'GET',
                 });
                 if (response.ok) {
+                    setError('');
                     const result = await response.json();
                     const rTs = result.roundTables;
                     setAttendingMode(result.attendanceMode);
@@ -93,6 +95,7 @@ export default function Dashboard() {
                     setAvailableDates([...dates]);
                     setAbsentDetails(absentDetails); // Set absent details for all dates
                     setSelectedDate([...dates][0]);
+                    setLoadingRoundTables(false)
                 } else {
                     const errorMsg = await response.json();
                     setError(errorMsg.message || 'Failed to fetch data');
@@ -102,10 +105,23 @@ export default function Dashboard() {
                 setError('An error occurred while fetching data');
             }
         };
-
         fetchData();
     }, []);
-    const toggleAttendance = () => setAttendingMode(!attendingMode);
+
+    const toggleAttendance = async () => {
+        try {
+            const response = await fetch('https://ilead-app-production.up.railway.app/api/toggleAttendance', {
+                method: 'POST'
+            });
+            const data = await response.json()
+            if (response.ok) {
+                setError('')
+                setAttendingMode(!attendingMode)
+            } else setError(data.message)
+        } catch (error) {
+            setError(error)
+        }
+    }
 
     const toggleAttendanceForRoundTable = async (roundTable) => {
         try {
@@ -119,6 +135,7 @@ export default function Dashboard() {
             });
             const result = await response.json();
             if (response.ok) {
+                setError('')
                 setData((prevData) =>
                     prevData.map((rt) => (rt.name === roundTable.roundTableName ? { ...rt, allowedToEdit: result } : rt))
                 );
@@ -156,8 +173,6 @@ export default function Dashboard() {
             document.addEventListener('mousedown', handleClick);
             return () => document.removeEventListener('mousedown', handleClick);
         }
-        console.log(absentMembers)
-        console.log(absentDetails)
     }, [selectedRoundTable]);
 
     const attendanceGraphData = {
@@ -223,7 +238,11 @@ export default function Dashboard() {
                             </tr>
                         </thead>
                         <tbody>
-                            {data.map((roundTable) => (
+                            {loadingRoundTables ? (
+                                <span className="flex items-center justify-center">
+                                    <span className="animate-spin rounded-full border-4 border-t-transparent border-blue-500 w-8 h-8"></span>
+                                </span>
+                            ) : (data.map((roundTable) => (
                                 <tr
                                     key={roundTable._id}
                                     onClick={() => handleRoundTableClick(roundTable)}
@@ -248,7 +267,7 @@ export default function Dashboard() {
                                         </button>
                                     </td>
                                 </tr>
-                            ))}
+                            )))}
                         </tbody>
                     </table>
                 </div>
