@@ -229,7 +229,7 @@ const findRoundTable = async (req, res) => {
 const toggleAttendance = async (req, res) => {
     try {
         const { attendanceMode } = req.body
-        console.log(typeof attendanceMode)
+        console.log(req.body)
         if (typeof attendanceMode !== 'boolean' || attendanceMode === undefined || attendanceMode === null || attendanceMode === empt) return res.status(400).json({ message: 'Bad request' })
         await Admin.updateMany({}, { attendanceMode: attendanceMode });
         const [y1RoundTables, y2RoundTables, y3RoundTables] = await Promise.all([
