@@ -230,7 +230,7 @@ const toggleAttendance = async (req, res) => {
     try {
         const { attendanceMode } = req.body
         console.log(req.body)
-        if (typeof attendanceMode !== 'boolean' || attendanceMode === undefined || attendanceMode === null ) return res.status(400).json({ message: 'Bad request' })
+        if (typeof attendanceMode !== 'boolean' || attendanceMode === undefined || attendanceMode === null) return res.status(400).json({ message: 'Bad request' })
         await Admin.updateMany({}, { attendanceMode: attendanceMode });
         const [y1RoundTables, y2RoundTables, y3RoundTables] = await Promise.all([
             RoundTable1.find(),
@@ -335,6 +335,37 @@ const getFacilitatorWithRoundTable = async (req, res) => {
     }
 };
 
+const sendEmail = async (req, res) => {
+    try {
+        // Dynamically import `emailjs` to work with CommonJS
+        const { SMTPClient } = await import('emailjs');
+
+        // Create a new SMTP client instance
+        const client = new SMTPClient({
+            user: process.env.EMAIL_USER,
+            password: process.env.EMAIL_PASS,
+            host: 'smtp.gmail.com',
+            ssl: true,
+        });
+
+        // Send email
+        const response = await client.sendAsync({
+            text: 'working', // Email content
+            from: `Your Name <${process.env.EMAIL_USER}>`, // Sender's email
+            to: 'wigothehacker@gmail.com', // Recipient's email
+            subject: 'Email Subject', // Email subject
+        });
+
+        console.log('Email sent successfully:', response);
+        res.status(200).json({ success: true });
+    } catch (error) {
+        console.error('Failed to send email:', error);
+        res.status(500).json({ message: 'Failed to send email' });
+    }
+};
+
+
+
 module.exports = {
     addMembers,
     getMembersAndAttendance,
@@ -350,5 +381,6 @@ module.exports = {
     handleEvents,
     registerRoundTable,
     createFacilitators,
-    getFacilitatorWithRoundTable
+    getFacilitatorWithRoundTable,
+    sendEmail
 };
