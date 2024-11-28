@@ -48,12 +48,14 @@ export default function HomePage() {
 
                 <div className="space-y-4">
                     {/* Show Register New Roundtable button */}
-                    <button
+                    {userRole === 'admin' && (
+                        <button
                         onClick={handleRegister}
                         className="w-full py-3 px-6 bg-blue-600 text-white text-lg font-semibold rounded hover:bg-blue-700 focus:outline-none transition duration-300 ease-in-out"
                     >
                         Register New Roundtable
                     </button>
+                    )}
                     
                     {/* Show Do Attendance button */}
                     <button
@@ -64,7 +66,7 @@ export default function HomePage() {
                     </button>
 
                     {/* Show role-specific buttons */}
-                    {userRole === 'facilitator' && (
+                    {userRole === 'facilitator'|| userRole === 'admin' && (
                         <>
                             <button
                                 onClick={handleAddMember}

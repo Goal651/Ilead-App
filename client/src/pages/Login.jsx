@@ -1,14 +1,18 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ClipLoader } from 'react-spinners';
+import { motion } from 'framer-motion';
 
 export default function Login() {
     const [names, setNames] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
             const loginData = { names, password };
 
@@ -26,22 +30,29 @@ export default function Login() {
                 localStorage.setItem('role', data.role);
                 localStorage.setItem('roundtable', data.roundTableName);
                 localStorage.setItem('className', data.className);
+
                 navigate('/');
             } else if (response.status === 403) {
                 setError(data.message);
-            }
-            else {
+            } else {
                 setError(data.message || 'Invalid credentials');
             }
+            setLoading(false);
         } catch (error) {
             console.error('Login error:', error);
             setError('An error occurred during login');
+            setLoading(false);
         }
     };
 
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-100">
-            <div className="w-full max-w-md p-8 space-y-6 bg-white shadow-md rounded-lg">
+            <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5 }}
+                className="w-full max-w-md p-8 space-y-6 bg-white shadow-md rounded-lg"
+            >
                 <h2 className="text-2xl font-bold text-center">Login</h2>
                 {error && (
                     <div className="p-4 text-red-700 bg-red-100 border border-red-400 rounded">
@@ -60,7 +71,7 @@ export default function Login() {
                         <input
                             type="text"
                             id="names"
-                            placeholder='John Doe'
+                            placeholder="John Doe"
                             className="w-full p-2 border rounded"
                             onChange={(e) => setNames(e.target.value)}
                             required
@@ -80,14 +91,22 @@ export default function Login() {
                             required
                         />
                     </div>
-                    <button
-                        type="submit"
-                        className="w-full py-2 px-4 text-white bg-blue-600 hover:bg-blue-700 rounded-md"
-                    >
-                        Login
-                    </button>
+                    {loading ? (
+                        <div className="flex justify-center">
+                            <ClipLoader color="blue" />
+                        </div>
+                    ) : (
+                        <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            type="submit"
+                            className="w-full py-2 px-4 text-white bg-blue-600 hover:bg-blue-700 rounded-md"
+                        >
+                            Login
+                        </motion.button>
+                    )}
                 </form>
-            </div>
+            </motion.div>
         </div>
     );
 }

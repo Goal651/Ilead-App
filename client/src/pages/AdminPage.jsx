@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Bar } from 'react-chartjs-2';
 import 'chart.js/auto';
-import { RingLoader } from 'react-spinners'
+import { ClipLoader, RingLoader } from 'react-spinners'
 
 export default function Dashboard() {
     const [data, setData] = useState([]);
@@ -222,12 +222,13 @@ export default function Dashboard() {
             )}
 
             <div className="flex flex-col gap-6">
+
                 <div className="w-full p-6 flex flex-col sm:flex-row gap-4 sm:gap-10">
                     <button
                         onClick={() => navigate('/')} // Navigate to home page
-                        className="fixed bottom-4 right-4 p-3 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200"
+                        className=" btn bg-blue-500 text-white rounded-xl shadow-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 "
                     >
-                        <span className="text-lg sm:text-xl font-bold">Home</span>
+                        Home
                     </button>
                     <button
                         onClick={openSummaryModal}
@@ -237,12 +238,20 @@ export default function Dashboard() {
                     </button>
 
                     {/* Buttons for toggling roundtable attendance mode */}
-                    <button
-                        onClick={toggleAttendance}
-                        className={`p-4 btn rounded-lg shadow w-full sm:w-auto ${attendingMode ? 'bg-green-500 hover:bg-green-600 text-white' : 'bg-gray-400 hover:bg-gray-500 text-black'}`}
-                    >
-                        {attendingMode ? 'Disable Attending Mode' : 'Enable Attending Mode'}
-                    </button>
+                    {
+                        changingAttendingMode ? (
+                            <div className="flex justify-center items-center w-full sm:w-auto">
+                                <ClipLoader />
+                            </div>
+                        ) : (
+                            <button
+                                onClick={toggleAttendance}
+                                className={`p-4 btn rounded-lg shadow w-full sm:w-auto ${attendingMode ? 'bg-red-500 hover:bg-red-600 text-white' : 'bg-green-500 hover:bg-green-600 text-white'}`}
+                            >
+                                {attendingMode ? 'Disable Attending Mode' : 'Enable Attending Mode'}
+                            </button>
+                        )
+                    }
                 </div>
 
 
@@ -271,19 +280,26 @@ export default function Dashboard() {
                                     <td className="border px-4 py-2">{roundTable.class}</td>
                                     <td className="border px-4 py-2">{roundTable.members.length}</td>
                                     <td className="border px-4 py-2">
-                                        <button
-                                            onClick={(e) => {
-                                                e.stopPropagation()
-                                                toggleAttendanceForRoundTable({
-                                                    roundTableName: roundTable.name,
-                                                    className: roundTable.class,
-                                                    allowedToEdit: roundTable.allowedToEdit
-                                                })
-                                            }}
-                                            className={`btn text-white ${roundTable.allowedToEdit ? 'bg-green-500' : 'bg-red-500'}`}
-                                        >
-                                            {roundTable.allowedToEdit ? 'Disable' : 'Enable'}
-                                        </button>
+                                        {changingAttendingMode ? (
+                                            <div className="btn text-white bg-base-100">
+                                                <ClipLoader
+                                                    className='font-bold'
+                                                    color='black' />
+                                            </div>) : (
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation()
+                                                    toggleAttendanceForRoundTable({
+                                                        roundTableName: roundTable.name,
+                                                        className: roundTable.class,
+                                                        allowedToEdit: roundTable.allowedToEdit
+                                                    })
+                                                }}
+                                                className={`btn text-white ${roundTable.allowedToEdit ? 'bg-red-500' : 'bg-green-500'}`}
+                                            >
+                                                {roundTable.allowedToEdit ? 'Disable' : 'Enable'}
+                                            </button>
+                                        )}
                                     </td>
                                 </tr>
                             )))}
